@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { IngredientForm } from '../forms/IngredientForm';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface Ingredient {
   id: string;
@@ -37,7 +38,7 @@ export const Ingredients: React.FC = () => {
   const fetchIngredients = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/ingredients');
+      const response = await fetch(API_ENDPOINTS.ingredients);
       if (!response.ok) {
         throw new Error('Failed to fetch ingredients');
       }
@@ -56,7 +57,7 @@ export const Ingredients: React.FC = () => {
     if (!confirm('Are you sure you want to delete this ingredient?')) return;
     
     try {
-      const response = await fetch(`http://localhost:3001/api/ingredients/${id}`, {
+      const response = await fetch(`${API_ENDPOINTS.ingredients}/${id}`, {
         method: 'DELETE'
       });
       

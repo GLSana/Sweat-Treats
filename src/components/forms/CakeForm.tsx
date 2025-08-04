@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface Ingredient {
   id: string;
@@ -40,7 +41,7 @@ export const CakeForm: React.FC<CakeFormProps> = ({ onClose }) => {
 
   const fetchIngredients = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/ingredients');
+      const response = await fetch(API_ENDPOINTS.ingredients);
       if (!response.ok) {
         throw new Error('Failed to fetch ingredients');
       }
@@ -124,7 +125,7 @@ export const CakeForm: React.FC<CakeFormProps> = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/cakes', {
+      const response = await fetch(API_ENDPOINTS.cakes, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

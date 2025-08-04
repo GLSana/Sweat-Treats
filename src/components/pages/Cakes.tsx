@@ -10,6 +10,7 @@ import {
 import { CakeForm } from '../forms/CakeForm';
 import { CakeDetails } from '../modals/CakeDetails';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface CakeIngredient {
   ingredientId: string;
@@ -47,7 +48,7 @@ export const Cakes: React.FC = () => {
   const fetchCakes = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/cakes');
+      const response = await fetch(API_ENDPOINTS.cakes);
       if (!response.ok) {
         throw new Error('Failed to fetch cakes');
       }
@@ -66,7 +67,7 @@ export const Cakes: React.FC = () => {
     if (!confirm('Are you sure you want to delete this cake plan?')) return;
     
     try {
-      const response = await fetch(`http://localhost:3001/api/cakes/${id}`, {
+      const response = await fetch(`${API_ENDPOINTS.cakes}/${id}`, {
         method: 'DELETE'
       });
       

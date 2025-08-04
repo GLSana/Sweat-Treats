@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface Ingredient {
   id: string;
@@ -67,8 +68,8 @@ export const IngredientForm: React.FC<IngredientFormProps> = ({ ingredient, onCl
 
     try {
       const url = ingredient 
-        ? `http://localhost:3001/api/ingredients/${ingredient.id}`
-        : 'http://localhost:3001/api/ingredients';
+        ? `${API_ENDPOINTS.ingredients}/${ingredient.id}`
+        : API_ENDPOINTS.ingredients;
       
       const method = ingredient ? 'PUT' : 'POST';
 

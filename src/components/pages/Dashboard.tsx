@@ -11,6 +11,7 @@ import {
   Calculator
 } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface DashboardStats {
   totalCakes: number;
@@ -46,7 +47,7 @@ export const Dashboard: React.FC = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/analytics');
+      const response = await fetch(API_ENDPOINTS.analytics);
       if (!response.ok) {
         throw new Error('Failed to fetch dashboard data');
       }

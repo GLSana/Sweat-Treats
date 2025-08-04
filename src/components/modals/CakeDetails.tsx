@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Package } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface CakeIngredient {
   ingredientId: string;
@@ -42,7 +43,7 @@ export const CakeDetails: React.FC<CakeDetailsProps> = ({ cake, onClose }) => {
 
   const fetchIngredients = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/ingredients');
+      const response = await fetch(API_ENDPOINTS.ingredients);
       const data = await response.json();
       setIngredients(data);
     } catch (error) {

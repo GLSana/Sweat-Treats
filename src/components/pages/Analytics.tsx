@@ -9,6 +9,7 @@ import {
   Calculator
 } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface AnalyticsData {
   summary: {
@@ -49,7 +50,7 @@ export const Analytics: React.FC = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/analytics');
+      const response = await fetch(API_ENDPOINTS.analytics);
       if (!response.ok) {
         throw new Error('Failed to fetch analytics');
       }
