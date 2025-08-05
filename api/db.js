@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
+const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 const DATA_DIR = '/tmp';
 const INGREDIENTS_FILE = path.join(DATA_DIR, 'ingredients.json');
@@ -265,6 +265,19 @@ export const deleteCake = (id) => {
     console.error('Error deleting cake:', error);
     throw error;
   }
+};
+
+// Export all functions
+module.exports = {
+  initializeData,
+  getIngredients,
+  createIngredient,
+  updateIngredient,
+  deleteIngredient,
+  getCakes,
+  createCake,
+  deleteCake,
+  getAnalytics
 };
 
 // Analytics functions
