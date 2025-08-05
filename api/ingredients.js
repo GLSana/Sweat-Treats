@@ -1,106 +1,131 @@
-const { getIngredients, createIngredient, updateIngredient, deleteIngredient } = require('./db.js');
-
-module.exports = (req, res) => {
+// Simple ingredients endpoint for Vercel
+export default function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  try {
-    switch (req.method) {
-      case 'GET':
-        const ingredients = getIngredients();
-        return res.json(ingredients);
-      
-      case 'POST':
-        const { name, unit, costPerUnit, packageSize, notes, category } = req.body;
-        
-        // Validation
-        if (!name || !unit || !costPerUnit || !packageSize) {
-          return res.status(400).json({ error: 'Missing required fields' });
-        }
-        
-        if (costPerUnit <= 0 || packageSize <= 0) {
-          return res.status(400).json({ error: 'Cost and package size must be positive' });
-        }
-        
-        // Check for duplicate names
-        const existingIngredients = getIngredients();
-        if (existingIngredients.some(ing => ing.name.toLowerCase() === name.toLowerCase().trim())) {
-          return res.status(400).json({ error: 'Ingredient with this name already exists' });
-        }
-        
-        const newIngredient = createIngredient({
-          name: name.trim(),
-          unit,
-          costPerUnit,
-          packageSize,
-          notes: notes || '',
-          category: category || ''
-        });
-        
-        return res.status(201).json(newIngredient);
-      
-      case 'PUT':
-        const { id } = req.query;
-        if (!id) {
-          return res.status(400).json({ error: 'Ingredient ID is required' });
-        }
-        
-        const updateData = req.body;
-        
-        // Validation for update
-        if (updateData.name && !updateData.name.trim()) {
-          return res.status(400).json({ error: 'Name cannot be empty' });
-        }
-        
-        if (updateData.costPerUnit && updateData.costPerUnit <= 0) {
-          return res.status(400).json({ error: 'Cost per unit must be positive' });
-        }
-        
-        if (updateData.packageSize && updateData.packageSize <= 0) {
-          return res.status(400).json({ error: 'Package size must be positive' });
-        }
-        
-        // Check for duplicate names (excluding current ingredient)
-        if (updateData.name) {
-          const existingIngredients = getIngredients();
-          if (existingIngredients.some(ing => ing.id !== id && ing.name.toLowerCase() === updateData.name.toLowerCase().trim())) {
-            return res.status(400).json({ error: 'Ingredient with this name already exists' });
-          }
-        }
-        
-        const updatedIngredient = updateIngredient(id, {
-          ...updateData,
-          name: updateData.name ? updateData.name.trim() : undefined
-        });
-        
-        return res.json(updatedIngredient);
-      
-      case 'DELETE':
-        const { id: deleteId } = req.query;
-        if (!deleteId) {
-          return res.status(400).json({ error: 'Ingredient ID is required' });
-        }
-        
-        deleteIngredient(deleteId);
-        return res.status(204).end();
-      
-      default:
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
-  } catch (error) {
-    console.error('Ingredients API Error:', error);
-    
-    if (error.message === 'Ingredient not found') {
-      return res.status(404).json({ error: 'Ingredient not found' });
-    }
-    
-    return res.status(500).json({ error: 'Internal server error' });
+  if (req.method === 'GET') {
+    // Return sample ingredients data
+    const ingredients = [
+      {
+        id: '1',
+        name: 'All Purpose Flour',
+        unit: 'g',
+        costPerUnit: 450,
+        packageSize: 1000,
+        notes: 'Premium quality flour',
+        category: 'Dry Ingredients',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '2',
+        name: 'Caster Sugar',
+        unit: 'g',
+        costPerUnit: 280,
+        packageSize: 1000,
+        notes: 'Fine white sugar',
+        category: 'Sweeteners',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '3',
+        name: 'Butter',
+        unit: 'g',
+        costPerUnit: 850,
+        packageSize: 500,
+        notes: 'Unsalted butter',
+        category: 'Dairy',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '4',
+        name: 'Eggs',
+        unit: 'pcs',
+        costPerUnit: 35,
+        packageSize: 1,
+        notes: 'Large fresh eggs',
+        category: 'Dairy',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '5',
+        name: 'Vanilla Extract',
+        unit: 'ml',
+        costPerUnit: 15,
+        packageSize: 1,
+        notes: 'Pure vanilla extract',
+        category: 'Flavorings',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '6',
+        name: 'Baking Powder',
+        unit: 'g',
+        costPerUnit: 8,
+        packageSize: 1,
+        notes: 'Double acting',
+        category: 'Leavening',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '7',
+        name: 'Cocoa Powder',
+        unit: 'g',
+        costPerUnit: 12,
+        packageSize: 1,
+        notes: 'Unsweetened cocoa',
+        category: 'Dry Ingredients',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '8',
+        name: 'Heavy Cream',
+        unit: 'ml',
+        costPerUnit: 2.5,
+        packageSize: 1,
+        notes: 'Fresh dairy cream',
+        category: 'Dairy',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '9',
+        name: 'Cream Cheese',
+        unit: 'g',
+        costPerUnit: 3.2,
+        packageSize: 1,
+        notes: 'Philadelphia cream cheese',
+        category: 'Dairy',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: '10',
+        name: 'Powdered Sugar',
+        unit: 'g',
+        costPerUnit: 0.65,
+        packageSize: 1,
+        notes: 'Confectioner\'s sugar',
+        category: 'Sweeteners',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    ];
+
+    return res.status(200).json(ingredients);
   }
-};
+
+  return res.status(405).json({ error: 'Method not allowed for now' });
+}
