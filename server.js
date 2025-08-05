@@ -119,15 +119,8 @@ app.use(express.json());
 // Serve static files from the React app build
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// API routes
-app.use('/api', (req, res, next) => {
-  // Remove /api prefix for internal routing
-  req.url = req.url.replace('/api', '');
-  next();
-});
-
 // Ingredients endpoints
-app.get('/ingredients', (req, res) => {
+app.get('/api/ingredients', (req, res) => {
   try {
     const ingredients = db.prepare('SELECT * FROM ingredients ORDER BY name').all();
     res.json(ingredients);
@@ -137,7 +130,7 @@ app.get('/ingredients', (req, res) => {
   }
 });
 
-app.post('/ingredients', (req, res) => {
+app.post('/api/ingredients', (req, res) => {
   try {
     const { name, unit, costPerUnit, packageSize, notes, category } = req.body;
     
@@ -171,7 +164,7 @@ app.post('/ingredients', (req, res) => {
   }
 });
 
-app.put('/ingredients/:id', (req, res) => {
+app.put('/api/ingredients/:id', (req, res) => {
   try {
     const { id } = req.params;
     const { name, unit, costPerUnit, packageSize, notes, category } = req.body;
@@ -205,7 +198,7 @@ app.put('/ingredients/:id', (req, res) => {
   }
 });
 
-app.delete('/ingredients/:id', (req, res) => {
+app.delete('/api/ingredients/:id', (req, res) => {
   try {
     const { id } = req.params;
     const result = db.prepare('DELETE FROM ingredients WHERE id = ?').run(id);
@@ -222,7 +215,7 @@ app.delete('/ingredients/:id', (req, res) => {
 });
 
 // Cakes endpoints
-app.get('/cakes', (req, res) => {
+app.get('/api/cakes', (req, res) => {
   try {
     const cakes = db.prepare(`
       SELECT c.*, 
@@ -248,7 +241,7 @@ app.get('/cakes', (req, res) => {
   }
 });
 
-app.post('/cakes', (req, res) => {
+app.post('/api/cakes', (req, res) => {
   try {
     const { name, type, weight, occasion, description, ingredients, profitMargin } = req.body;
     
@@ -294,7 +287,7 @@ app.post('/cakes', (req, res) => {
   }
 });
 
-app.delete('/cakes/:id', (req, res) => {
+app.delete('/api/cakes/:id', (req, res) => {
   try {
     const { id } = req.params;
     const result = db.prepare('DELETE FROM cakes WHERE id = ?').run(id);
@@ -311,7 +304,7 @@ app.delete('/cakes/:id', (req, res) => {
 });
 
 // Analytics endpoints
-app.get('/analytics', (req, res) => {
+app.get('/api/analytics', (req, res) => {
   try {
     const totalCakes = db.prepare('SELECT COUNT(*) as count FROM cakes').get().count;
     const totalIngredients = db.prepare('SELECT COUNT(*) as count FROM ingredients').get().count;
