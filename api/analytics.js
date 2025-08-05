@@ -1,6 +1,6 @@
 const { getAnalytics } = require('./db.js');
 
-module.exports = async function handler(req, res) {
+module.exports = (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -22,4 +22,4 @@ module.exports = async function handler(req, res) {
     console.error('Analytics API Error:', error);
     return res.status(500).json({ error: 'Failed to fetch analytics' });
   }
-}
+};

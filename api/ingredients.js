@@ -1,6 +1,6 @@
 const { getIngredients, createIngredient, updateIngredient, deleteIngredient } = require('./db.js');
 
-module.exports = async function handler(req, res) {
+module.exports = (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -103,4 +103,4 @@ module.exports = async function handler(req, res) {
     
     return res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
